@@ -173,10 +173,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ========== 7. CONTACT FORM HANDLING ==========
     if (contactForm) {
-        contactForm.addEventListener('submit', (e) => {
+        contactForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            alert("Thank you! We'll get back to you soon.");
-            contactForm.reset();
+            const submitBtn = document.getElementById('submitBtn');
+            const formStatus = document.getElementById('formStatus');
+            const originalBtnHTML = submitBtn.innerHTML;
+
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span>Sending...</span> <i class="fas fa-spinner fa-spin"></i>';
+            formStatus.style.display = 'none';
+
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('https://formsubmit.co/ajax/business@breavians.com', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: data.name,
+                        email: data.email,
+                        subject: data.subject,
+                        service: data.service,
+                        message: data.message,
+                        _subject: `New Inquiry from Breavians Website: ${data.subject || 'New Contact'}`
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    formStatus.style.display = 'block';
+                    formStatus.style.background = '#d1fae5';
+                    formStatus.style.color = '#065f46';
+                    formStatus.style.border = '1px solid #a7f3d0';
+                    formStatus.textContent = "Thank you! Your message has been sent successfully. We will get back to you shortly.";
+                    contactForm.reset();
+                } else {
+                    throw new Error(result.message || 'Submission failed');
+                }
+            } catch (err) {
+                formStatus.style.display = 'block';
+                formStatus.style.background = '#fee2e2';
+                formStatus.style.color = '#991b1b';
+                formStatus.style.border = '1px solid #fecaca';
+                formStatus.textContent = "Oops! Something went wrong. You can also email us directly at business@breavians.com.";
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHTML;
+            }
         });
     }
 
