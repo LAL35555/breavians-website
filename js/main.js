@@ -229,6 +229,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // ========== 8. PARALLAX EFFECT ON HERO SHAPES ==========
+    // ========== 9. TECHNOLOGIES MARQUEE (seamless loop) ==========
+    document.querySelectorAll('.marquee-track').forEach((track) => {
+        const group = track.querySelector('.marquee-group');
+        if (group) {
+            const clone = group.cloneNode(true);
+            clone.setAttribute('aria-hidden', 'true');
+            track.appendChild(clone);
+        }
+    });
+
+    // ========== 10. BACK TO TOP BUTTON ==========
+    const backToTop = document.getElementById('backToTop');
+    if (backToTop) {
+        window.addEventListener('scroll', () => {
+            backToTop.classList.toggle('show', window.scrollY > 600);
+        });
+    }
     if (hero) {
         const shapes = hero.querySelectorAll('.shape');
 
