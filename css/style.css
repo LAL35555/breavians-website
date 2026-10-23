@@ -163,6 +163,14 @@ img { max-width: 100%; display: block; }
     font-size: 1.4rem;
 }
 
+.logo-img {
+    width: 42px;
+    height: 42px;
+    object-fit: contain;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
 .logo-icon {
     width: 40px;
     height: 40px;
@@ -177,6 +185,15 @@ img { max-width: 100%; display: block; }
 }
 
 .logo-text { color: var(--gray-900); }
+
+.footer-brand .logo .logo-text {
+    color: var(--white);
+}
+
+.footer-brand .logo-img {
+    background: var(--white);
+    padding: 2px;
+}
 
 .nav-links {
     display: flex;
